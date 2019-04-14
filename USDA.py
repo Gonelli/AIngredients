@@ -1,27 +1,29 @@
-# import shlex
-
-# api_key = vy9T2DDU77D0ZBLadzrI0bJswyF2A6PXfrtG59D1
-
-# exampe = "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?api_key=vy9T2DDU77D0ZBLadzrI0bJswyF2A6PXfrtG59D1&location=Denver+CO"
-
-# curl -H "Content-Type:application/json" -d '{"ndbno":["01009","45202763","35193"],"type":"b"}' vy9T2DDU77D0ZBLadzrI0bJswyF2A6PXfrtG59D1@api.nal.usda.gov/ndb/V2/reports
-
-# curl -H "Content-Type:application/json" -d '{"ndbno":["01009","45202763","35193"],"type":"b"}' vy9T2DDU77D0ZBLadzrI0bJswyF2A6PXfrtG59D1@api.nal.usda.gov/ndb/V2/reports
-
-# import urllib2
-# data = '{"nw_src": "10.0.0.1/32", "nw_dst": "10.0.0.2/32", "nw_proto": "ICMP", "actions": "ALLOW", "priority": "10"}'
-# url = 'https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?api_key=vy9T2DDU77D0ZBLadzrI0bJswyF2A6PXfrtG59D1&location=Denver+CO'
-# req = urllib2.Request(url, data, {'Content-Type': 'application/json'})
-# f = urllib2.urlopen(req)
-# for x in f:
-#     print(x)
-# f.close() 
-
-
 import shlex
 import subprocess
-cmd = '''curl -H "Content-Type:application/json" -d '{"ndbno":["01009","45202763","35193"],"type":"b"}' vy9T2DDU77D0ZBLadzrI0bJswyF2A6PXfrtG59D1@api.nal.usda.gov/ndb/V2/reports'''
-args = shlex.split(cmd)
-process = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-stdout, stderr = process.communicate()
-print(stdout)
+
+class USDA:
+
+
+	def curl(nbdno, reportType):
+		# Tony's data.gov registered API key
+		API_key = "vy9T2DDU77D0ZBLadzrI0bJswyF2A6PXfrtG59D1"
+
+		# Ugly command to minimize escapes
+		cmd = '''curl -H "Content-Type:application/json" -d '{'''
+		cmd += '''"ndbno":["''' + "\",\"".join([str(x) for x in nbdno]) + '''"]'''
+		cmd += ''',"type":"''' + reportType + '''"}' '''
+		cmd += API_key + '''@api.nal.usda.gov/ndb/V2/reports'''
+		args = shlex.split(cmd)
+		process = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		stdout, stderr = process.communicate()
+		# print(stdout)
+
+	def parseCurl(stdout):
+		return stdout
+
+
+	# A list of up to 25 NDB numbers
+	nbdno = ["01009"]
+	# Report type: [b]asic or [f]ull or [s]tats
+	reportType = "b"
+	curl(nbdno, reportType)
