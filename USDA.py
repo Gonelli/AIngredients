@@ -13,7 +13,7 @@ class Ingredient:
 
 	def __init__(self, searchTerms):
 		# Defaults to [b]asic report stats
-		self.reportJson = json.loads(self.getReport([self.getFoodID(searchTerms)], "b"))
+		self.reportJson = json.loads(self.getReport([self.getFoodID(searchTerms, "Standard Reference")], "b"))
 		self.name = self.reportJson["foods"][0]["food"]["desc"]["name"]
 		self.nutrient0 = self.reportJson["foods"][0]["food"]["nutrients"][0]["name"]
 
@@ -23,17 +23,26 @@ class Ingredient:
 			self.nutrients[nutrient["name"]] = (nutrient["value"], nutrient["unit"])
 
 	"""
-	Takes an input string (q) and searches USDA's database to get a list of possible matching non-branded food items. Returns the nbdno of the top result.
+	Takes an input string (q) and searches USDA's database to get a list of possible matching non-branded food items. Also takes "Standard Reference" or "Branded Food Products" inputs. Returns the nbdno of the top result.
 	"""
-	def getFoodID(self, q):
-		cmd = '''curl -H "Content-Type:application/json" -d '{"q":"''' + q + '''","ds":"Standard Reference","max":"5","offset":"0"}' ''' + API_key + '''@api.nal.usda.gov/ndb/search'''
+	def getFoodID(self, q, ds):
+		cmd = '''curl -H "Content-Type:application/json" -d '{"q":"''' + q + '''","ds":"''' + ds + '''","max":"5","offset":"0"}' ''' + API_key + '''@api.nal.usda.gov/ndb/search'''
 		args = shlex.split(cmd)
 		process = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		stdout, stderr = process.communicate()
 		myJson = json.loads(stdout)
-		# for item in myJson["list"]["item"]:
-		# 	print(item["name"])
-		return myJson["list"]["item"][0]["ndbno"]
+
+		try:
+			# for item in myJson["list"]["item"]:
+			# 	print(item["name"])
+			return myJson["list"]["item"][0]["ndbno"]
+		except:
+			if ds is "Branded Food Products":
+				return stderr
+			else:
+				return self.getFoodID(q, "Branded Food Products")
+
+			
 	
 	"""
 	Takes an food ID (nbdno) and a report type character ([b]asic, [f]ull, or [s]tats), then returns a json file of the food's nutritional data. 
@@ -43,9 +52,16 @@ class Ingredient:
 		args = shlex.split(cmd)
 		process = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		stdout, stderr = process.communicate()
+		# parsed = json.loads(stdout)
+		# print(json.dumps(parsed, indent=4, sort_keys=True))
 		return stdout
 
 
 ###############################################################################
-myIngredient = Ingredient("Salted Butter")
-print(myIngredient.name)
+myIngredient = Ingredient("Ready-to-bake corn tortillas")
+# print(myIngredient.reportJson)
+
+# measures = myIngredient.reportJson["foods"][0]["food"]["nutrients"][0]["measures"]
+
+# for measure in measures:
+# 	print(measure["label"])
