@@ -40,9 +40,7 @@ class Ingredient:
 			if ds is "Branded Food Products":
 				return stderr
 			else:
-				return self.getFoodID(q, "Branded Food Products")
-
-			
+				return self.getFoodID(q, "Branded Food Products")	
 	
 	"""
 	Takes an food ID (nbdno) and a report type character ([b]asic, [f]ull, or [s]tats), then returns a json file of the food's nutritional data. 
