@@ -1,5 +1,12 @@
 from USDA import Ingredient
 
+"""
+Goes through 'Recipe List.txt' and parses all of the recipe information.
+Returns a dictionary of many recipes, structured as follows:
+{recipeName: {ingredientName: measurement, ingredientName: measurement}, recipeName: ...}
+
+Use Recipe() on a recipe to get detailed nutritional information. This avoids requesting USDA info for each unused recipe.
+"""
 def parseRecipes():
 	with open("Recipe List.txt", "r") as ins:
 		allRecipes = {}
@@ -13,60 +20,36 @@ def parseRecipes():
 				recipeName = "[None]"
 				continue
 			elif line[0] is chr(9):	# If line begins with a tab
-				ingrMeasure = [s for s in line[1:-1].split(chr(9)) if s] # Delimits tabs
-				ingrDict[ingrMeasure[0]] = ingrMeasure[1]
+				ingrAndMeasure = [s for s in line[1:-1].split(chr(9)) if s] # Delimits tabs
+				ingrDict[ingrAndMeasure[0]] = ingrAndMeasure[1]
 				continue
 			else:	# Is recipe name
 				recipeName = line[:-2]
-			# print allRecipes
-		print allRecipes
+		return allRecipes
 
 class Recipe:
-	vegetarian = False
-	ingredients = {}
+	# vegetarian = False
+	ingredients = {} # {Ingredient: measurement, Ingredient: measurement...}
+	# cuisineFlags = [vegetarian, cuisine, palette, heaviness]
 
-	def __init__(self, ingredientDict):
-		ingredients = ingredientDict.copy()
+	def __init__(self, recipeName, hollowRecipe):
+		for ingredientName in hollowRecipe.keys():
+			fullIngredient = Ingredient(ingredientName)
+			self.ingredients[fullIngredient] = hollowRecipe[ingredientName]
 
 	"""
 	Adds ingredient and subsequent quantity to ingredients list
 	"""
 	def addIngredient(self, ingredient, quantity):
-		ingredients[ingredient] = quantity # ingredient should be of Ingredient type
-	"""
-	Converts an ingredient's quantity to grams
-	"""
-	def convertQuantity(self, quantity):
-		amount = quantity.split(" ", 1)[0]
-		unit = quantity.split(" ", 1)[1]
-
-		if unit is "oz":
-			amount *= 28.34952	# 1 oz is ~28.34952 grams
-		# Check is tsp is a measurement option first, then fall back to these
-		elif unit is "teaspoons":
-			amount *= 4.93	# 1 tsp of WATER is ~4.93, so possible density issues
-		elif unit is "cups":
-			amount *= 236.6 # 1 cup of WATER is ~236.6, so possible density issues
-		else:
-			measures = myIngredient.reportJson["foods"][0]["food"]["nutrients"][0]["measures"]
-			converted = False
-			for measure in measures:
-				label = measure["label"]
-				if label in unit: # if tortilla in tortillas, e.g.
-					if measure["eunit"] is "g":
-						amount *= measure["eqv"]
-					elif measure["eunit"] is "ml":
-						amount *= measure["eqv"] # Assumes water, where 1g/ml
-					else:
-						assert False, "Don't know the unit label"
-					converted = True
-					break
-			if not converted:
-				assert False, "Don't know the unit label"
-		return amount
+		self.ingredients[ingredient] = quantity # ingredient should be of Ingredient type
 
 
-	# TODO: Types of flags on food
-	# [vegetarian, cuisine, palette, heaviness]
+###############################################################################
+# TODO: Types of flags on food
+# [vegetarian, cuisine, palette, heaviness]
 
-parseRecipes()
+# Demonstrate getting a Recipe
+allRecipes = parseRecipes()
+for recipeName in allRecipes.keys():
+	if "Chicken Noodle Soup".lower() in recipeName.lower():	# Find recipe you want
+		myRecipe = Recipe(recipeName, allRecipes[recipeName]) # Create Recipe object

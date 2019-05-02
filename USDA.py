@@ -54,9 +54,52 @@ class Ingredient:
 		# print(json.dumps(parsed, indent=4, sort_keys=True))
 		return stdout
 
+	"""
+	Returns the amount of nutrientType for the ingredient, given a quantity of the ingredient in grams
+	"""
+	def getNutrientValue(self, nurtientType, quantity):
+		for nutrientSection in self.reportJson["foods"][0]["food"]["nutrients"]:
+			if nutrientSection["name"] == nurtientType:
+				print(float(nutrientSection["value"]) / 100 * quantity, nutrientSection["unit"])
+		# print (self.reportJson["foods"][0]["food"]["nutrients"])
+
+	"""
+	Takes a string of ingredient amount and unit type, converts this ingredient's quantity to grams
+	"""
+	def convertQuantity(self, quantity):
+		amount = float(quantity.split(" ", 1)[0])
+		unit = quantity.split(" ", 1)[1]
+
+		if unit == "oz":
+			amount *= 28.34952	# 1 oz is ~28.34952 grams
+		# Check is tsp is a measurement option first, then fall back to these
+		elif unit == "teaspoons":
+			amount *= 4.93	# 1 tsp of WATER is ~4.93, so possible density issues
+		elif unit == "cups":
+			amount *= 236.6 # 1 cup of WATER is ~236.6, so possible density issues
+		else:
+			measures = self.reportJson["foods"][0]["food"]["nutrients"][0]["measures"]
+			converted = False
+			for measure in measures:
+				label = measure["label"]
+				if label.lower() in unit.lower(): # if tortilla in tortillas, e.g.
+					if measure["eunit"] == "g":
+						amount *= measure["eqv"]
+					elif measure["eunit"] == "ml":
+						amount *= measure["eqv"] # Assumes water, where 1g/ml
+					else:
+						assert False, "Don't know the unit label"
+					converted = True
+					break
+			if not converted:
+				assert False, "Don't know the unit label"
+		return amount
+
 
 ###############################################################################
-myIngredient = Ingredient("Ready-to-bake corn tortillas")
+# myIngredient = Ingredient("Ready-to-bake corn tortillas")
+
+# print myIngredient.convertQuantity("1 Tortilla")
 # print(myIngredient.reportJson)
 
 # measures = myIngredient.reportJson["foods"][0]["food"]["nutrients"][0]["measures"]
