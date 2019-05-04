@@ -3,7 +3,7 @@ from USDA import Ingredient
 """
 Goes through 'Recipe List.txt' and parses all of the recipe information.
 Returns a dictionary of many recipes, structured as follows:
-{recipeName: {ingredientName: measurement, ingredientName: measurement}, recipeName: ...}
+{recipeName: ({ingredientName: measurement, ingredientName: measurement}, [flag, flag])}
 
 Use Recipe() on a recipe to get detailed nutritional information. This avoids requesting USDA info for each unused recipe.
 """
@@ -12,10 +12,14 @@ def parseRecipes():
 		allRecipes = {}
 		ingrDict = {}
 		recipeName = "[None]"
+		flags = []
 		for line in ins:
 			if line[0] is '~':		# Current recipe done, begin on the next
-				temp = ingrDict.copy()
-				allRecipes[recipeName] = temp
+				if line[1] is not ' ':
+					assert False, "Need a space by the flags"
+				flags = line[2:-1].lower().split(", ")
+				ingrDictCopy = ingrDict.copy()
+				allRecipes[recipeName] = (ingrDictCopy, flags)
 				ingrDict = {}
 				recipeName = "[None]"
 				continue
@@ -28,11 +32,13 @@ def parseRecipes():
 		return allRecipes
 
 class Recipe:
-	# vegetarian = False
 	ingredients = {} # {Ingredient: measurement, Ingredient: measurement...}
-	# cuisineFlags = [vegetarian, cuisine, palette, heaviness]
+	flags = [] # [Vegetarian/meat, cuisine, palette, meal]
 
-	def __init__(self, recipeName, hollowRecipe):
+	def __init__(self, recipeName, hollowRecipe, hollowFlags):
+		self.ingredients = {} # {Ingredient: measurement, Ingredient: measurement...}
+		self.flags = [] # [Vegetarian/meat, cuisine, palette, meal]
+		self.flags = hollowFlags
 		for ingredientName in hollowRecipe.keys():
 			fullIngredient = Ingredient(ingredientName)
 			self.ingredients[fullIngredient] = hollowRecipe[ingredientName]
@@ -45,11 +51,15 @@ class Recipe:
 
 
 ###############################################################################
-# TODO: Types of flags on food
-# [vegetarian, cuisine, palette, heaviness]
 
 # Demonstrate getting a Recipe
 allRecipes = parseRecipes()
 for recipeName in allRecipes.keys():
 	if "Chicken Noodle Soup".lower() in recipeName.lower():	# Find recipe you want
-		myRecipe = Recipe(recipeName, allRecipes[recipeName]) # Create Recipe object
+		myRecipe = Recipe(recipeName, allRecipes[recipeName][0], allRecipes[recipeName][1]) # Create Recipe object
+		for ingredient in myRecipe.ingredients:
+			print ingredient
+			# for nutrientSection in self.reportJson["foods"][0]["food"]["nutrients"]:
+
+# 		print myRecipe.ingredients
+# 		print myRecipe.flags

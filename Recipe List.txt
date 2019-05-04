@@ -6,22 +6,22 @@ Macaroni and Cheese:
 	Reduced fat milk			2 cups 
 	Cheddar						2 cups 
 	Bread crumbs				0.5 cup 
-~
+~ vegetarian, american, savory, dinner
 Chicken Noodle Soup:
 	Raw Skinless Chicken Breast	16 oz
 	Raw Onion					1 cups
 	Raw Carrots					1 cups
 	Raw Celery					0.5 cups
-	Raw Garlic					3 teaspoons 		(Minced)
+	Raw Garlic					3 teaspoons
 	Dried Thyme					0.5 teaspoons
 	Dried Rosemary				0.5 teaspoons
 	Table Salt 					0.5 teaspoons
 	Black Pepper				0.25 teaspoons
 	Canned Chicken Broth		8 cups
 	Dry Egg Noodles				8 oz
-~
+~ meat, american, savory, dinner
 Beef and Broccoli Stir Fry:
-	100% Pure Corn Starch		9 teaspoons		(Uses Branded)
+	100% Pure Corn Starch		9 teaspoon
 	Tap Drinking Water			0.5 cups
 	Garlic Powder				0.5 teaspoons
 	Boneless Chuck Steak		16 oz
@@ -31,7 +31,7 @@ Beef and Broccoli Stir Fry:
 	Sugar, Brown				6 teaspoons
 	Ground Ginger				1 teaspoons
 	Sesame Oil					9 teaspoons
-~
+~ meat
 Beef Stew:
 	Boneless Chuck Steak		24 oz
 	Raw Celery					0.5 cups
@@ -47,13 +47,13 @@ Beef Stew:
 	Frozen corn off the cob		1 cups
 	Enriched all-purpose flour	0.25 cups
 	Tap Drinking Water			0.25 cups
-~
+~ 
 Enchiladas:
 	Seasoned chicken for fajitas	16 oz
 	Enchilada Sauce				16 oz
 	Mexican Cheese Blend		2 cups
 	Ready-to-bake corn tortillas 	12 tortillas		(one of the measures)
-~
+~ 
 Fettuccine Alfredo:
 	Heavy Cream					2 cups
 	Raw Garlic					1.5 teaspoons
@@ -61,3 +61,4 @@ Fettuccine Alfredo:
 	Dried Parsley				6 teaspoons
 	Fettuccine Egg Noodles		12 oz
 	Salted butter				12 teaspoons
+~ 

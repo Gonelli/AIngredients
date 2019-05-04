@@ -6,16 +6,14 @@ import json
 API_key = "vy9T2DDU77D0ZBLadzrI0bJswyF2A6PXfrtG59D1"
 
 class Ingredient:
-	reportJson = None
-	name = ""
-	nutrients = {} # Nutrient name: (Amount per 100g of ingredient, Unit)
-	nutrientsDetailed = [] # Fully detailed nutient list with measurement options
 
 	def __init__(self, searchTerms):
 		# Defaults to [b]asic report stats
 		self.reportJson = json.loads(self.getReport([self.getFoodID(searchTerms, "Standard Reference")], "b"))
 		self.name = self.reportJson["foods"][0]["food"]["desc"]["name"]
-		self.nutrient0 = self.reportJson["foods"][0]["food"]["nutrients"][0]["name"]
+		self.nutrients = {} # Nutrient name: (Amount per 100g of ingredient, Unit)
+		self.nutrientsDetailed = [] # Fully detailed nutient list with measurement options
+
 
 		# Add all nutrient lists to nutrients[]
 		for nutrient in self.reportJson["foods"][0]["food"]["nutrients"]:
@@ -55,12 +53,15 @@ class Ingredient:
 		return stdout
 
 	"""
-	Returns the amount of nutrientType for the ingredient, given a quantity of the ingredient in grams
+	Returns the amount of nutrientType for the ingredient in grams, given a quantity of the ingredient in grams
 	"""
 	def getNutrientValue(self, nurtientType, quantity):
 		for nutrientSection in self.reportJson["foods"][0]["food"]["nutrients"]:
-			if nutrientSection["name"] == nurtientType:
-				print(float(nutrientSection["value"]) / 100 * quantity, nutrientSection["unit"])
+			print nutrientSection
+			if nutrientSection["name"].lower() == nurtientType.lower():
+				quantityString = str(float(nutrientSection["value"]) / 100 * quantity) + " " +nutrientSection["unit"]
+				return self.convertQuantity(quantityString)
+		return 0
 		# print (self.reportJson["foods"][0]["food"]["nutrients"])
 
 	"""
@@ -77,6 +78,10 @@ class Ingredient:
 			amount *= 4.93	# 1 tsp of WATER is ~4.93, so possible density issues
 		elif unit == "cups":
 			amount *= 236.6 # 1 cup of WATER is ~236.6, so possible density issues
+		elif unit == "g":
+			amount *= 1.0
+		elif unit == "mg":
+			amount /= 1000.0
 		else:
 			measures = self.reportJson["foods"][0]["food"]["nutrients"][0]["measures"]
 			converted = False
@@ -100,6 +105,7 @@ class Ingredient:
 # myIngredient = Ingredient("Ready-to-bake corn tortillas")
 
 # print myIngredient.convertQuantity("1 Tortilla")
+# print myIngredient.getNutrientValue("protein", 50)
 # print(myIngredient.reportJson)
 
 # measures = myIngredient.reportJson["foods"][0]["food"]["nutrients"][0]["measures"]
