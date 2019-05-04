@@ -53,13 +53,11 @@ class Recipe:
 ###############################################################################
 
 # Demonstrate getting a Recipe
-allRecipes = parseRecipes()
-for recipeName in allRecipes.keys():
-	if "Chicken Noodle Soup".lower() in recipeName.lower():	# Find recipe you want
-		myRecipe = Recipe(recipeName, allRecipes[recipeName][0], allRecipes[recipeName][1]) # Create Recipe object
-		for ingredient in myRecipe.ingredients:
-			print ingredient
-			# for nutrientSection in self.reportJson["foods"][0]["food"]["nutrients"]:
+# allRecipes = parseRecipes()
+# for recipeName in allRecipes.keys():
+# 	if "Chicken Noodle Soup".lower() in recipeName.lower():	# Find recipe you want
+# 		myRecipe = Recipe(recipeName, allRecipes[recipeName][0], allRecipes[recipeName][1]) # Create Recipe object
+# 		for ingredient in myRecipe.ingredients:
+# 			print ingredient
+# 			# for nutrientSection in self.reportJson["foods"][0]["food"]["nutrients"]:
 
-# 		print myRecipe.ingredients
-# 		print myRecipe.flags
