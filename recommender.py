@@ -11,7 +11,7 @@ def recommend(recipes, constraints):
     rec = []
     for recipeName in recipes.keys():
         #print recipeName
-        myRecipe = Recipe(recipeName, recipes[recipeName])
+        myRecipe = Recipe(recipeName, recipes[recipeName][0],recipes[recipeName][1])
         rec.append(myRecipe)
         rank = 0
         for c in constraints:
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     for recipeName in allRecipes.keys():
         print recipeName
-        myRecipe = Recipe(recipeName, allRecipes[recipeName])
+        myRecipe = Recipe(recipeName, allRecipes[recipeName][0],allRecipes[recipeName][1])
         rank = 0
         for c in constraints:
             if c.satisfy(myRecipe) == True:
