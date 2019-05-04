@@ -20,7 +20,7 @@ def recommend(recipes, constraints):
             else:
                 rank -= c.get_importance()
         ranks.append(rank)
-    return rec[rank.index(min(rank))]
+    return rec[ranks.index(max(ranks))]
     
 
 if __name__ == "__main__":
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     
     ranks = []
     allRecipes = parseRecipes()
-
+    '''
     for recipeName in allRecipes.keys():
         print recipeName
         myRecipe = Recipe(recipeName, allRecipes[recipeName][0],allRecipes[recipeName][1])
@@ -90,6 +90,8 @@ if __name__ == "__main__":
                 rank -= c.get_importance()
         ranks.append(rank)
     print ranks
+    '''
+    print recommend(allRecipes,constraints)
     
     
     
