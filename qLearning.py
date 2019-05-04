@@ -2,6 +2,7 @@
 # if the rating is good, increase the rating for each ingredient towards the flag category
 # if bad, decrease it
 import sys
+from math import sqrt
 
 #and then eventually, we can dynamically generate new recipes based on ingredients that are towards
 
@@ -26,8 +27,8 @@ def updateWeights(user, recipe, grades):
     # get recipe flags and iterate over each
     for (category, grade) in grades:
         # grades should be on a scale from -5 to 5 so that updating weights is easy
-        for ingredient in recipe:
-            user.ingredient_weights[category][ingredient.name] = sqrt(user.ingredient_weights[category] + (alpha * grade * ingredient.convertQuantity(recipe[ingredient])))
+        for (ingredient, quantity) in recipe.ingredients:
+            user.ingredient_weights[category][ingredient.name] = sqrt(user.ingredient_weights[category] + (user.alpha * grade * ingredient_feature_function(ingredient, quantity)))
 
 def recommendModifiedRecipe(user, recipe, flags):
     #swap out the minimum ingredient with something new
@@ -52,49 +53,27 @@ def recommendModifiedRecipe(user, recipe, flags):
             new_value = str(round(new_cups, 2)) + ' cups'
             del new_recipe[min_ingredient]
             new_recipe[ingredient] = new_value
-            return
+            return new_recipe
     #should not reach here
 
-#FEATURE FUNCTIONS FOR VARIOUS NUTRIENT TYPES
-
-            
-
-
-
-
-# food_weights = [4.0, 3.0, 9.0] #weights for cheese, paprika, horseradish
-# alpha = 0.5
-
-# def cheese_function(amount):
-#     #cheese is fattening, so more will decrease q value
-#     return 1.0 / (amount ** 0.5)
-
-# def paprika_function(amount):
-#     #paprika is relatively healthy, but still not our healthiest ingredient
-#     return 0.5 * amount
-
-# def horseradish_function(amount):
-#     #horseradish is very healthy, increasing should directly increase q value
-#     return amount
-
-
-# def qLearning(reward, volumes):
-#     feature_functions =  [cheese_function, paprika_function, horseradish_function]
-#     #carries out an approximate q learning algorithm that uses features with
-#     #weights
-#     for index in range(len(food_weights)):
-#         food_weights[index] = food_weights[index] + (alpha * reward * feature_functions[index](volumes[index]))
-#     print("Updated weights")
-#     print(food_weights)
-# if __name__ == '__main__':
-
-#     print("Welcome to your AI Cook Assistant!")
-#     while True:
-#         advanceKey = input("Press anything to continue or type 'q' to quit: ")
-#         if advanceKey == 'q':
-#             break
-#         cheese = float(input("Enter cheese volume: "))
-#         paprika = float(input("Enter paprika volume: "))
-#         horseradish = float(input("Enter horseradish volume: "))
-#         reward = float(input("Your rating from 1 (worst) to 10 (best): "))
-#         qLearning(reward, [cheese, paprika, horseradish])
+"""
+gives a score to each ingredient based on amount of carbs, lipids, protein, and fiber
+"""
+def ingredient_feature_function(ingredient, quantity_raw):
+    score = 0.0
+    amount = ingredient.convertQuantity(quantity_raw)
+    carbs = ingredient.getNutrientValue("Carbohydrate, by difference", amount)
+    if carbs is not None:
+        # 50 grams of carbs per meal is ideal
+        score += (-0.04 * ((carbs[0] - 50) ** 2)) + 100
+    lipids = ingredient.getNutrientValue("Total lipid (fat)", amount)
+    if lipids is not None:
+        # 15 grams of fat per meal is ideal
+        score += ((-2.0 / 15.0) * ((lipids[0] - 15.0) ** 2)) + 30
+    protein = ingredient.getNutrientValue("Protein", amount)
+    if protein is not None:
+        score += ((-1.0 / 9.0) * ((protein[0] - 18.0) ** 2)) + 36
+    fiber = ingredient.getNutrientValue("Fiber, total dietary", amount)
+    if fiber is not None:
+        score += ((-1.0 / 5.0) * ((fiber[0] - 10.0) ** 2)) + 20
+    return score
