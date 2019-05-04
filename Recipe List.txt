@@ -1,11 +1,11 @@
 Macaroni and Cheese:
-	Dry Macaroni pasta			16 oz 
+	Dry Macaroni pasta			16 oz
 	Salted butter				24 teaspoons
 	Enriched all-purpose flour	12 teaspoons
 	Table Salt 					1 teaspoons
-	Reduced fat milk			2 cups 
-	Cheddar						2 cups 
-	Bread crumbs				0.5 cup 
+	Reduced fat milk			2 cups
+	Cheddar						2 cups
+	Bread crumbs				0.5 cups
 ~ vegetarian, american, savory, dinner
 Chicken Noodle Soup:
 	Raw Skinless Chicken Breast	16 oz
@@ -21,7 +21,7 @@ Chicken Noodle Soup:
 	Dry Egg Noodles				8 oz
 ~ meat, american, savory, dinner
 Beef and Broccoli Stir Fry:
-	100% Pure Corn Starch		9 teaspoon
+	100% Pure Corn Starch		9 teaspoons
 	Tap Drinking Water			0.5 cups
 	Garlic Powder				0.5 teaspoons
 	Boneless Chuck Steak		16 oz
@@ -52,7 +52,7 @@ Enchiladas:
 	Seasoned chicken for fajitas	16 oz
 	Enchilada Sauce				16 oz
 	Mexican Cheese Blend		2 cups
-	Ready-to-bake corn tortillas 	12 tortillas		(one of the measures)
+	Ready-to-bake corn tortillas 	12 tortillas
 ~ 
 Fettuccine Alfredo:
 	Heavy Cream					2 cups

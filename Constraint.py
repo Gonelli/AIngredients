@@ -114,14 +114,14 @@ def get_nutrients(recipe):
         quantity = recipe.ingredients[k]
         amount  = k.convertQuantity(quantity)
         if k.getNutrientValue("Carbohydrate, by difference", amount) is not None:
-            nutrient["carbonhydrate"] += k.getNutrientValue("Carbohydrate, by difference", amount)[0]
+            nutrient["carbonhydrate"] += k.getNutrientValue("Carbohydrate, by difference", amount)#[0]
         if k.getNutrientValue("Total lipid (fat)", amount) is not None:
-            nutrient["fat"] += k.getNutrientValue("Total lipid (fat)", amount)[0]
+            nutrient["fat"] += k.getNutrientValue("Total lipid (fat)", amount)#[0]
         if k.getNutrientValue("Protein", amount) is not None:
-            nutrient["protein"] += k.getNutrientValue("Protein", amount)[0]
+            nutrient["protein"] += k.getNutrientValue("Protein", amount)#[0]
         if k.getNutrientValue("Fiber, total dietary", amount) is not None:
-            nutrient["fibre"] += k.getNutrientValue("Fiber, total dietary", amount)[0]
-    print nutrient
+            nutrient["fibre"] += k.getNutrientValue("Fiber, total dietary", amount)#[0]
+    #print nutrient
     return nutrient
     
 
@@ -140,6 +140,7 @@ constraint4 = Balance_Constraint()
 print constraint4.satisfy(recipe1)
 '''
 if __name__ == "__main__":
+    '''
     allRecipes = parseRecipes()
     recipeName = allRecipes.keys()[4]
     print recipeName
@@ -150,4 +151,5 @@ if __name__ == "__main__":
 
     constraint2 = Calories_Constraint("lunch", "male", 180, 100, 40)
     print constraint2.satisfy(myRecipe)
+    '''
     
