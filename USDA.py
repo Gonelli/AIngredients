@@ -57,7 +57,7 @@ class Ingredient:
 	"""
 	def getNutrientValue(self, nurtientType, quantity):
 		for nutrientSection in self.reportJson["foods"][0]["food"]["nutrients"]:
-			print nutrientSection
+			#print nutrientSection
 			if nutrientSection["name"].lower() == nurtientType.lower():
 				quantityString = str(float(nutrientSection["value"]) / 100 * quantity) + " " +nutrientSection["unit"]
 				return self.convertQuantity(quantityString)

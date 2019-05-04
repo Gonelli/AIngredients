@@ -32,8 +32,8 @@ def parseRecipes():
 		return allRecipes
 
 class Recipe:
-	ingredients = {} # {Ingredient: measurement, Ingredient: measurement...}
-	flags = [] # [Vegetarian/meat, cuisine, palette, meal]
+	#ingredients = {} # {Ingredient: measurement, Ingredient: measurement...}
+	#flags = [] # [Vegetarian/meat, cuisine, palette, meal]
 
 	def __init__(self, recipeName, hollowRecipe, hollowFlags):
 		self.ingredients = {} # {Ingredient: measurement, Ingredient: measurement...}
@@ -51,7 +51,7 @@ class Recipe:
 
 
 ###############################################################################
-
+'''
 # Demonstrate getting a Recipe
 allRecipes = parseRecipes()
 for recipeName in allRecipes.keys():
@@ -63,3 +63,4 @@ for recipeName in allRecipes.keys():
 
 # 		print myRecipe.ingredients
 # 		print myRecipe.flags
+'''
