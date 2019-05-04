@@ -1,13 +1,13 @@
-from Recipes import Recipe
+from Recipes import *
 from USDA import Ingredient
-from Recipes import parseRecipes
+from recommender import *
 
 def main():
-	userIsMale = True
+	userGender = ""
 	userHeight = 0
 	userWeight = 0
 	userAge = 0
-	userMeal = None
+	userMeal = "dinner"
 	allRecipes = parseRecipes()
 
 	print "\n\n> Greetings. Welcome to AIngredients! Here to spice up your recipes."
@@ -18,10 +18,10 @@ def main():
 	while True:
 		userInput = raw_input("")
 		if 'm' is userInput.lower()[0]:
-			userIsMale = True
+			userGender = "male"
 			break
 		elif 'f' in userInput.lower()[0]:
-			userIsMale = False
+			userGender = "female"
 			break
 
 		print "\n> Sorry, please try again. Use 'M' for Male or 'F' for Female."
@@ -66,7 +66,9 @@ def main():
 		print "> How old are you?"
 
 
-	
+	myRecipe = recommend(allRecipes, [userMeal, userGender, userHeight, userWeight, userAge], [False, None])
+
+	print myRecipe.ingredients
 
 
 if __name__ == "__main__":

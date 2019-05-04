@@ -7,7 +7,17 @@ from Constraint import *
 import getopt
 import sys
 
-def recommend(recipes, constraints):
+def recommend(recipes, userStats, userPrefs):
+
+    constraints = []
+    ranks = []
+    if userPrefs[0] == True:
+        constraints.append(Vege_Constraint())
+    if userPrefs[1] is not None:
+        constraints.append(Flavour_Constraint(flavour))
+    constraints.append(Calories_Constraint(userStats[0], userStats[1], userStats[2], userStats[3], userStats[4]))
+    constraints.append(Balance_Constraint())
+
     rec = []
     for recipeName in recipes.keys():
         #print recipeName
@@ -59,13 +69,7 @@ if __name__ == "__main__":
             vege = True
             #print "vege:",vege
 
-    constraints = []
-    if vege == True:
-        constraints.append(Vege_Constraint())
-    if flavour is not None:
-        constraints.append(Flavour_Constraint(flavour))
-    constraints.append(Calories_Constraint(meal, gender, height, weight, age))
-    constraints.append(Balance_Constraint())
+
 
     '''
     recipe1 = {"carbonhydrate":50.01,"fat":13.3,"protein":20.01,"fibre":5.6,"vegetarian":False}

@@ -60,4 +60,4 @@ class Recipe:
 # 		for ingredient in myRecipe.ingredients:
 # 			print ingredient
 # 			# for nutrientSection in self.reportJson["foods"][0]["food"]["nutrients"]:
-
+'''
