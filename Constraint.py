@@ -62,6 +62,7 @@ class Calories_Constraint(Constraint):
         ch_percent = float(ch_calories)/total_calories
         fat_percent = float(fat_calories)/total_calories
         protein_percent = float(protein_calories)/total_calories
+        print ch_percent,fat_percent,protein_percent
 
         weight_reduced = (maintenance - total_calories)/250*0.5 #lb
         #check total in []
