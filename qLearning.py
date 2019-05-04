@@ -2,6 +2,7 @@
 # if the rating is good, increase the rating for each ingredient towards the flag category
 # if bad, decrease it
 import sys
+from math import sqrt
 
 #and then eventually, we can dynamically generate new recipes based on ingredients that are towards
 
@@ -52,7 +53,7 @@ def recommendModifiedRecipe(user, recipe, flags):
             new_value = str(round(new_cups, 2)) + ' cups'
             del new_recipe[min_ingredient]
             new_recipe[ingredient] = new_value
-            return
+            return new_recipe
     #should not reach here
 
 """
