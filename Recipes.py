@@ -49,15 +49,26 @@ class Recipe:
 	def addIngredient(self, ingredient, quantity):
 		self.ingredients[ingredient] = quantity # ingredient should be of Ingredient type
 
+	def divideRecipe(self, divisor):
+		for name in self.ingredients.keys():
+			measuresList = self.ingredients[name].split(" ")
+			number = float(measuresList[0]) / divisor
+			stringMesaure = str(number) + " " + measuresList[1]
+			self.ingredients[name] = stringMesaure
+
+
 
 ###############################################################################
-'''
+
 # Demonstrate getting a Recipe
 # allRecipes = parseRecipes()
+# myRecipe = None
 # for recipeName in allRecipes.keys():
 # 	if "Chicken Noodle Soup".lower() in recipeName.lower():	# Find recipe you want
 # 		myRecipe = Recipe(recipeName, allRecipes[recipeName][0], allRecipes[recipeName][1]) # Create Recipe object
+
+# myRecipe.divideRecipe(4)
 # 		for ingredient in myRecipe.ingredients:
 # 			print ingredient
 # 			# for nutrientSection in self.reportJson["foods"][0]["food"]["nutrients"]:
-'''
+
