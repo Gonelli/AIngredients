@@ -49,7 +49,7 @@ class Calories_Constraint(Constraint):
         
         #maintenance = 2500
         maintenance -= 500
-        print maintenance
+        #print maintenance
         if self.meal == "breakfast":
             max_cal = maintenance*0.3
             min_cal = maintenance*0.15
@@ -69,12 +69,12 @@ class Calories_Constraint(Constraint):
         ch_percent = float(ch_calories)/total_calories
         fat_percent = float(fat_calories)/total_calories
         protein_percent = float(protein_calories)/total_calories
-        print ch_percent,fat_percent,protein_percent
+        #print ch_percent,fat_percent,protein_percent
         if self.meal == "breakfast":
             total_calories /= max(int(total_calories/(0.2*maintenance)),1)
         else:
             total_calories /= max(int(total_calories/(0.4*maintenance)),1)
-        print total_calories
+        #print total_calories
         weight_reduced = (maintenance - total_calories)/250*0.5 #lb
         #check total in []
         #check ch_percent in [45%-65%], fat_percent in [20%-35%], protein_percent in [10%-35%]

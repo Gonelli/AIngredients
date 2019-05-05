@@ -21,7 +21,7 @@ def recommend(recipes, userStats, userPrefs):
 
     rec = []
     for recipeName in recipes.keys():
-        print recipeName
+        #print recipeName
         myRecipe = Recipe(recipeName, recipes[recipeName][0],recipes[recipeName][1])
         #rec.append(myRecipe)
         rank = 0
@@ -37,7 +37,7 @@ def recommend(recipes, userStats, userPrefs):
         if deleted == False:
             ranks.append(rank)
             rec.append(myRecipe)
-    print ranks
+    #print ranks
     '''
     #softmax selection of recipe
     softmax = np.exp(ranks - np.max(ranks))/\
@@ -50,9 +50,9 @@ def recommend(recipes, userStats, userPrefs):
     for r in ranks:
         prob.append(float(r+0.1)/(sum(ranks)+0.1*len(ranks))) #Laplace smoothing
     index = int(np.random.choice(len(prob),p=prob))
-    print prob
-    print ranks[index]
-    return recipes.keys()[ranks.index(max(ranks))]#rec[ranks.index(max(ranks))]
+    #print prob
+    #print ranks[index]
+    return rec[index]#rec[ranks.index(max(ranks))]
     
 
 if __name__ == "__main__":
