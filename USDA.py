@@ -21,6 +21,12 @@ class Ingredient:
 			self.nutrientsDetailed.append(nutrient)
 			self.nutrients[nutrient["name"]] = (nutrient["value"], nutrient["unit"])
 
+	def __hash__(self):
+		return self.name.__hash__()
+	
+	def __eq__(self, other):
+		return self.name == other.name
+
 	"""
 	Takes an input string (q) and searches USDA's database to get a list of possible matching non-branded food items. Also takes "Standard Reference" or "Branded Food Products" inputs. Returns the nbdno of the top result.
 	"""
