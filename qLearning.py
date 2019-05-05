@@ -7,6 +7,9 @@ import copy
 
 #and then eventually, we can dynamically generate new recipes based on ingredients that are towards
 
+WEIGHT_INDEX = 0
+OBJ_INDEX = 1
+
 class WeightsDictionary:
     def __init__(self):
        self.dict = {}
@@ -19,8 +22,13 @@ class WeightsDictionary:
     def __str__(self):
         result = ''
         for (key, dictionary) in self.dict.items():
-            result += key + ': ' + str(dictionary) + ', '
+            result += key + ': {'
+            for (name, tup) in dictionary.items():
+                result += '{' + name + ': ' + str(tup[WEIGHT_INDEX]) + '}, '
+            result = result[0: len(result) - 2]
+            result += '}, '
         result = result[0: len(result) - 2]
+        result += '}'
         return result
 
 class User:
@@ -46,8 +54,8 @@ def updateWeights(user, recipe, grades):
     for (category, grade) in grades.items():
         # grades should be on a scale from -5 to 5 so that updating weights is easy
         for (ingredient, quantity) in recipe.ingredients.items():
-            raw_quantity = user.ingredient_weights[category].get(ingredient.name, 0.0) + (user.alpha * grade * ingredient_feature_function(ingredient, quantity))
-            user.ingredient_weights[category][ingredient.name] = sqrt(abs(raw_quantity)) * ((raw_quantity / raw_quantity) if raw_quantity > 0 else 0)
+            raw_quantity = user.ingredient_weights[category].get(ingredient.name, (0.0, None))[WEIGHT_INDEX] + (user.alpha * grade * ingredient_feature_function(ingredient, quantity))
+            user.ingredient_weights[category][ingredient.name] = (sqrt(abs(raw_quantity)) * ((raw_quantity / raw_quantity) if raw_quantity > 0 else 0), ingredient)
     print(user.ingredient_weights)
 
 
@@ -57,23 +65,24 @@ def recommendModifiedRecipe(user, recipe, flags):
     for flag in flags:
         weights = user.ingredient_weights[flag]
         for (ingredient, quantity) in recipe.ingredients.items():
-            if weights[ingredient.name] < min_ingredient[1]:
+            if weights[ingredient.name][WEIGHT_INDEX] < min_ingredient[1]:
                 #this is new minimum
-                min_ingredient = (ingredient, weights[ingredient.name], flag)
+                min_ingredient = (ingredient, weights[ingredient.name][WEIGHT_INDEX], flag)
     # create a copy of the original recipe, swap the old ingredient with a new one, and return
-    sorted_ingredients = sorted(user.ingredient_weights[flag].items(), key=lambda x: x[1], reverse=True)
-    ingredient_names = [ingredient.name for (ingredient, quantity) in recipe.ingredients.items()]
+    sorted_ingredients = sorted(user.ingredient_weights[flag].items(), key=lambda x: x[1][WEIGHT_INDEX], reverse=True)
+    ingredient_names = {ingredient.name for (ingredient, quantity) in recipe.ingredients.items()}
     new_recipe = copy.copy(recipe)
-    for ingredient in sorted_ingredients:
-        if ingredient.name not in ingredient_names:
+    for (ingredient, tup) in sorted_ingredients:
+        if ingredient not in ingredient_names:
             # find the equivalent value of the new ingredient for the old ingredient
-            original_grams = min_ingredient[0].convertQuantity(recipe.ingredients[min_ingredient])
+            original_grams = min_ingredient[0].convertQuantity(recipe.ingredients[min_ingredient[0]])
             # amount of grams in one cup of the new ingredient
-            new_grams = ingredient.convertQuantity('1.0 cups') 
+            new_grams = tup[OBJ_INDEX].convertQuantity('1.0 cups') 
             new_cups = (original_grams / new_grams) 
             new_value = str(round(new_cups, 2)) + ' cups'
-            del new_recipe[min_ingredient]
-            new_recipe[ingredient] = new_value
+            # delete the old ingredient
+            new_recipe.ingredients.pop(min_ingredient[0], None)
+            new_recipe.ingredients[tup[OBJ_INDEX]] = new_value
             return new_recipe
     #should not reach here
 
