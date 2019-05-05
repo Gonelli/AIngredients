@@ -4,6 +4,7 @@ import json
 
 # Tony's data.gov registered API key
 API_key = "vy9T2DDU77D0ZBLadzrI0bJswyF2A6PXfrtG59D1"
+API_requests = 0
 
 class Ingredient:
 
@@ -20,10 +21,18 @@ class Ingredient:
 			self.nutrientsDetailed.append(nutrient)
 			self.nutrients[nutrient["name"]] = (nutrient["value"], nutrient["unit"])
 
+	def __hash__(self):
+		return self.name.__hash__()
+	
+	def __eq__(self, other):
+		return self.name == other.name
+
 	"""
 	Takes an input string (q) and searches USDA's database to get a list of possible matching non-branded food items. Also takes "Standard Reference" or "Branded Food Products" inputs. Returns the nbdno of the top result.
 	"""
 	def getFoodID(self, q, ds):
+		global API_requests
+		API_requests = API_requests + 1
 		cmd = '''curl -H "Content-Type:application/json" -d '{"q":"''' + q + '''","ds":"''' + ds + '''","max":"5","offset":"0"}' ''' + API_key + '''@api.nal.usda.gov/ndb/search'''
 		args = shlex.split(cmd)
 		process = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -44,6 +53,8 @@ class Ingredient:
 	Takes an food ID (nbdno) and a report type character ([b]asic, [f]ull, or [s]tats), then returns a json file of the food's nutritional data. 
 	"""
 	def getReport(self, nbdno, reportType):
+		global API_requests
+		API_requests = API_requests + 1
 		cmd = '''curl -H "Content-Type:application/json" -d '{"ndbno":["''' + "\",\"".join([str(x) for x in nbdno]) + '''"],"type":"''' + reportType + '''"}' ''' + API_key + '''@api.nal.usda.gov/ndb/V2/reports'''
 		args = shlex.split(cmd)
 		process = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
