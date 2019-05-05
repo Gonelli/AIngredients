@@ -48,13 +48,13 @@ Beef Stew:
 	Frozen corn off the cob		1 cups
 	Enriched all-purpose flour	0.25 cups
 	Tap Drinking Water			0.25 cups
-~ 
+~ meat
 Enchiladas:
 	Seasoned chicken for fajitas	16 oz
 	Enchilada Sauce				16 oz
 	Mexican Cheese Blend		2 cups
 	Ready-to-bake corn tortillas 	12 tortillas
-~ 
+~ meat
 Fettuccine Alfredo:
 	Heavy Cream					0.75 cups
 	Raw Garlic					1.5 teaspoons

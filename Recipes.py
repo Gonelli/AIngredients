@@ -36,6 +36,7 @@ class Recipe:
 	#flags = [] # [Vegetarian/meat, cuisine, palette, meal]
 
 	def __init__(self, recipeName, hollowRecipe, hollowFlags):
+		self.name = recipeName
 		self.ingredients = {} # {Ingredient: measurement, Ingredient: measurement...}
 		self.flags = [] # [Vegetarian/meat, cuisine, palette, meal]
 		self.flags = hollowFlags

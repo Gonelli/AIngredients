@@ -5,12 +5,21 @@ from qLearning import *
 
 
 def main():
-	userGender = ""
+	myUser = User(.5)
+	userGender = "female"
 	userHeight = 0
 	userWeight = 0
 	userAge = 0
 	userMeal = "dinner"
+
+	hungry = True
+	loop = 0
+
 	allRecipes = parseRecipes()
+	recipeList = []
+	for recipeName in allRecipes.keys():
+		recipeList.append(Recipe(recipeName, allRecipes[recipeName][0],allRecipes[recipeName][1]))
+
 
 	print "\n\n> Greetings. Welcome to AIngredients! Here to spice up your recipes."
 	print "> Would you prefer to go by Male or Female nutritional recomendations?"
@@ -67,68 +76,63 @@ def main():
 	# 	print "\n> Sorry, please try again. Enter your age as an integer."
 	# 	print "> How old are you?"
 
-	print "Finding a recipe, please wait..."
-	# myRecipe = recommend(allRecipes, [userMeal, userGender, userHeight, userWeight, userAge], [False, None])
-	myRecipe = ""
+	while hungry:
+		loop += 1
 
-	for recipeName in allRecipes.keys():
-		if "Chicken Noodle Soup".lower() in recipeName.lower():	# Find recipe you want
-			myRecipe = Recipe(recipeName, allRecipes[recipeName][0], allRecipes[recipeName][1]) # Create Recipe object
+		# Find a recipe
+		print "> Finding a recipe, please wait..."
+		myRecipe = recommend(recipeList, [userMeal, userGender, userHeight, userWeight, userAge], [False, None])
+		print myRecipe.name
+		# myRecipe = ""
+		# if loop is 1:
+		# 	for recipeName in allRecipes.keys():
+		# 		if "Beef and Broccoli Stir Fry".lower() in recipeName.lower():	# Find recipe you want
+		# 			myRecipe = Recipe(recipeName, allRecipes[recipeName][0], allRecipes[recipeName][1]) # Create Recipe object
+		# else:
+		# 	for recipeName in allRecipes.keys():
+		# 		if "Enchiladas".lower() in recipeName.lower():	# Find recipe you want
+		# 			myRecipe = Recipe(recipeName, allRecipes[recipeName][0], allRecipes[recipeName][1]) # Create Recipe object
 
+		# Modify recipe after a couple go arounds
+		if loop > 3:
+			myRecipe = recommendModifiedRecipe(myUser, myRecipe, flagGrades)
+		
+		# TODO: print the recipe
 
+		print "> Did you like that recipe?"
+		print "> Please grade the following aspects from -5 to 5"
 
-	print API_requests
-	print "Did you like that recipe?"
-	print "Please grade the following aspects from -5 to 5"
+		# Ask user to grade the recipe based on flags
+		flagGrades = {}
+		for flag in myRecipe.flags:
+			print "> Flag: ", flag.title()
 
-	flagGrades = {}
-	for flag in myRecipe.flags:
-		print "Flag: ", flag.title()
+			while True:
+				userInput = raw_input("")
+				try:
 
+					if int(userInput) >= -5 and int(userInput) <= 5:
+						flagGrades[flag] = int(userInput)
+						break
+				except:
+					userInput = ""
+				print "\n> Sorry, please try again. Enter your grade between -5 and 5."
+				print "> Flag: ", flag.title()
+
+		# Update Q-values
+		updateWeights(myUser, myRecipe, flagGrades)
+
+		print "\n> Wasn't that fun? How about another meal, whenever you're ready?"
 		while True:
 			userInput = raw_input("")
-			try:
+			if 'y' is userInput.lower()[0]:
+				break
+			elif 'n' in userInput.lower()[0]:
+				hungry = False
+				break
 
-				if int(userInput) >= -5 and int(userInput) <= 5:
-					flagGrades[flag] = int(userInput)
-					break
-			except:
-				userInput = ""
-			print "\n> Sorry, please try again. Enter your grade between -5 and 5."
-			print "Flag: ", flag.title()
-
-	print flagGrades
-	myUser = User(.5)
-	updateWeights(myUser, myRecipe, flagGrades)
-
-	print "Did you like that recipe?"
-	print "Please grade the following aspects from -5 to 5"
-
-	flagGrades = {}
-	for flag in myRecipe.flags:
-		print "Flag: ", flag.title()
-
-		while True:
-			userInput = raw_input("")
-			try:
-
-				if int(userInput) >= -5 and int(userInput) <= 5:
-					flagGrades[flag] = int(userInput)
-					break
-			except:
-				userInput = ""
-			print "\n> Sorry, please try again. Enter your grade between -5 and 5."
-			print "Flag: ", flag.title()
-
-	updateWeights(myUser, myRecipe, flagGrades)
-
-	for ingredient in myRecipe.ingredients:
-		print ingredient.name
-
-	recommendModifiedRecipe(myUser, myRecipe, flagGrades)
-
-	for ingredient in myRecipe.ingredients:
-		print ingredient.name
+			print "\n> Sorry, please try again. Use 'Y' for Yes or 'N' for No."
+			print "> Would you like another meal, whenever you're ready?"
 
 
 

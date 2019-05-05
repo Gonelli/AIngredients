@@ -61,6 +61,7 @@ class Calories_Constraint(Constraint):
             min_cal = maintenance*0.35
         #nutrients = recipe.get_nutrients()
         nutrients = get_nutrients(recipe) #for test
+        
         ch_calories = 4 * nutrients["carbonhydrate"]
         fat_calories = 9 * nutrients["fat"]
         protein_calories = 4 * nutrients["protein"]

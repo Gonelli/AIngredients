@@ -8,7 +8,7 @@ import getopt
 import sys
 import numpy as np
 
-def recommend(recipes, userStats, userPrefs):
+def recommend(recipeList, userStats, userPrefs):
 
     constraints = []
     ranks = []
@@ -20,9 +20,8 @@ def recommend(recipes, userStats, userPrefs):
     constraints.append(Balance_Constraint())
 
     rec = []
-    for recipeName in recipes.keys():
+    for myRecipe in recipeList:
         #print recipeName
-        myRecipe = Recipe(recipeName, recipes[recipeName][0],recipes[recipeName][1])
         #rec.append(myRecipe)
         rank = 0
         deleted = False
@@ -46,12 +45,13 @@ def recommend(recipes, userStats, userPrefs):
     print softmax
     print ranks[index]
     '''
+    print ranks
     prob = []
     for r in ranks:
         prob.append(float(r+0.1)/(sum(ranks)+0.1*len(ranks))) #Laplace smoothing
     index = int(np.random.choice(len(prob),p=prob))
-    #print prob
-    #print ranks[index]
+    print prob
+    
     return rec[index]#rec[ranks.index(max(ranks))]
     
 

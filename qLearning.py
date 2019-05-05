@@ -66,6 +66,7 @@ def recommendModifiedRecipe(user, recipe, flags):
         weights = user.ingredient_weights[flag]
         for (ingredient, quantity) in recipe.ingredients.items():
             if ingredient.name not in weights:
+                print "continued"
                 continue
             if weights[ingredient.name][WEIGHT_INDEX] < min_ingredient[1]:
                 #this is new minimum
@@ -88,8 +89,11 @@ def recommendModifiedRecipe(user, recipe, flags):
             # delete the old ingredient
             new_recipe.ingredients.pop(min_ingredient[0], None)
             new_recipe.ingredients[tup[OBJ_INDEX]] = new_value
+            print "modified"
+            print new_recipe
             return new_recipe
     #should not reach here
+    return recipe
 
 """
 gives a score to each ingredient based on amount of carbs, lipids, protein, and fiber
