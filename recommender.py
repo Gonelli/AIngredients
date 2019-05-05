@@ -18,7 +18,7 @@ def recommend(recipeList, userStats, userPrefs):
         constraints.append(Flavour_Constraint(flavour))
     constraints.append(Calories_Constraint(userStats[0], userStats[1], userStats[2], userStats[3], userStats[4]))
     constraints.append(Balance_Constraint())
-
+    
     rec = []
     for myRecipe in recipeList:
         #print recipeName
@@ -51,7 +51,6 @@ def recommend(recipeList, userStats, userPrefs):
         prob.append(float(r+0.1)/(sum(ranks)+0.1*len(ranks))) #Laplace smoothing
     index = int(np.random.choice(len(prob),p=prob))
     print prob
-    
     return rec[index]#rec[ranks.index(max(ranks))]
     
 
@@ -110,6 +109,9 @@ if __name__ == "__main__":
     
     ranks = []
     allRecipes = parseRecipes()
+    recipeList = []
+    for recipeName in allRecipes.keys():
+        recipeList.append(Recipe(recipeName, allRecipes[recipeName][0],allRecipes[recipeName][1]))
     stat = [meal,gender, height, weight, age]
     pref = [vege,flavour]
     '''
@@ -125,8 +127,8 @@ if __name__ == "__main__":
         ranks.append(rank)
     print ranks
     '''
-    print recommend(allRecipes,stat,pref)
-    
+    #print recommend(allRecipes,stat,pref)
+    print recommend(recipeList,stat,pref)
     
     
     
