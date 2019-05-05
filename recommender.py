@@ -6,6 +6,7 @@ from Constraint import *
 
 import getopt
 import sys
+import numpy as np
 
 def recommend(recipes, userStats, userPrefs):
 
@@ -22,15 +23,36 @@ def recommend(recipes, userStats, userPrefs):
     for recipeName in recipes.keys():
         #print recipeName
         myRecipe = Recipe(recipeName, recipes[recipeName][0],recipes[recipeName][1])
-        rec.append(myRecipe)
+        #rec.append(myRecipe)
         rank = 0
+        deleted = False
         for c in constraints:
             if c.satisfy(myRecipe) == True:
                 rank += c.get_importance()
             else:
-                rank -= c.get_importance()
-        ranks.append(rank)
-    return rec[ranks.index(max(ranks))]
+                if c.get_type() == 1:   #not satisfying the hard constraint
+                    deleted = True
+                    break
+                #rank -= c.get_importance()
+        if deleted == False:
+            ranks.append(rank)
+            rec.append(myRecipe)
+    #print ranks
+    '''
+    #softmax selection of recipe
+    softmax = np.exp(ranks - np.max(ranks))/\
+        np.exp(ranks - np.max(ranks)).sum(axis=0)
+    index = int(np.random.choice(len(softmax),p=softmax))
+    print softmax
+    print ranks[index]
+    '''
+    prob = []
+    for r in ranks:
+        prob.append(float(r+0.1)/(sum(ranks)+0.1*len(ranks))) #Laplace smoothing
+    index = int(np.random.choice(len(prob),p=prob))
+    #print prob
+    #print ranks[index]
+    return rec[index]#rec[ranks.index(max(ranks))]
     
 
 if __name__ == "__main__":

@@ -6,14 +6,19 @@ class Constraint:
         pass
     def get_importance(self):
         pass
+    def get_type(self):
+        pass
 
 class Vege_Constraint(Constraint):
     def satisfy(self,recipe):
         #return recipe.vegetarian
         #return recipe["vegetarian"]
+        print recipe.flags
         return "vegetarian" in recipe.flags
     def get_importance(self):
-        return 15
+        return 6
+    def get_type(self):
+        return 1    #1 for hard constraint
 
 #from https://www.livestrong.com/article/84673-calculate-nutrition-goals-weight-loss/
 #and https://healthyeating.sfgate.com/recommended-grams-nutrients-per-day-healthy-weight-loss-6294.html
@@ -36,14 +41,15 @@ class Calories_Constraint(Constraint):
         # fibre -> 25g-38g per day or 14g for 1000 calories consumed
         # no more than 2lb per week
         #maintenance = 2500 - 500 #maintenance - weight_reduce per day
-        '''
+        
         if self.gender == "male":
             maintenance = 10*self.weight + 6.25*self.height - 5*self.age + 5
         elif self.gender == "female":
             maintenance = 10*self.weight + 6.25*self.height - 5*self.age - 161
-        '''
-        maintenance = 2500
+        
+        #maintenance = 2500
         maintenance -= 500
+        #print maintenance
         if self.meal == "breakfast":
             max_cal = maintenance*0.3
             min_cal = maintenance*0.15
@@ -59,26 +65,37 @@ class Calories_Constraint(Constraint):
         fat_calories = 9 * nutrients["fat"]
         protein_calories = 4 * nutrients["protein"]
         total_calories = ch_calories + fat_calories + protein_calories
-        print total_calories
+        #print total_calories
         ch_percent = float(ch_calories)/total_calories
         fat_percent = float(fat_calories)/total_calories
         protein_percent = float(protein_calories)/total_calories
-        print ch_percent,fat_percent,protein_percent
-
+        #print ch_percent,fat_percent,protein_percent
+        if self.meal == "breakfast":
+            total_calories /= max(int(total_calories/(0.2*maintenance)),1)
+        else:
+            total_calories /= max(int(total_calories/(0.4*maintenance)),1)
+        #print total_calories
         weight_reduced = (maintenance - total_calories)/250*0.5 #lb
         #check total in []
         #check ch_percent in [45%-65%], fat_percent in [20%-35%], protein_percent in [10%-35%]
-        if ch_calories >= 0.45*total_calories and ch_calories <= 0.65*total_calories and \
-        fat_calories >= 0.2*total_calories and fat_calories <= 0.35*total_calories and \
+        '''
+        if ch_calories >= 0.40*total_calories and ch_calories <= 0.65*total_calories and \
+        fat_calories >= 0.15*total_calories and fat_calories <= 0.40*total_calories and \
         protein_calories >= 0.1*total_calories and protein_calories <= 0.35*total_calories and\
         total_calories >= min_cal and total_calories <= max_cal:
+        '''
+        if ch_percent>=0.4 and ch_percent<=0.65 and\
+            fat_percent>=0.15 and fat_percent<=0.4 and\
+                protein_percent>=0.1 and protein_percent<=0.35 and\
+                    total_calories >= min_cal and total_calories <= max_cal:
             return True
         else:
             return False
 
-
     def get_importance(self):
         return 4
+    def get_type(self):
+        return 0    #0 for soft constraint (preference)
 
 class Flavour_Constraint(Constraint):
     def __init__(self,flavour):
@@ -88,6 +105,8 @@ class Flavour_Constraint(Constraint):
         return self.flavour in recipe.flags#recipe["flags"]
     def get_importance(self):
         return 2
+    def get_type(self):
+        return 0
 
 class Balance_Constraint(Constraint):
     def satisfy(self,recipe):
@@ -109,6 +128,8 @@ class Balance_Constraint(Constraint):
             return False
     def get_importance(self):
         return 3
+    def get_type(self):
+        return 0
 
 def get_nutrients(recipe):
     nutrient = {"carbonhydrate":0.0,"fat":0.0,"protein":0.0,"fibre":0.0}
