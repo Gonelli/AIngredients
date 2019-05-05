@@ -10,7 +10,8 @@ class Constraint:
 class Vege_Constraint(Constraint):
     def satisfy(self,recipe):
         #return recipe.vegetarian
-        return recipe["vegetarian"]
+        #return recipe["vegetarian"]
+        return "vegetarian" in recipe.flags
     def get_importance(self):
         return 15
 
@@ -84,7 +85,7 @@ class Flavour_Constraint(Constraint):
         self.flavour = flavour
     def satisfy(self,recipe):
         #return self.flavour in recipe.flags
-        return self.flavour in recipe["flags"]
+        return self.flavour in recipe.flags#recipe["flags"]
     def get_importance(self):
         return 2
 
