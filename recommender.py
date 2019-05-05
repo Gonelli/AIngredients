@@ -30,7 +30,7 @@ def recommend(recipes, userStats, userPrefs):
             else:
                 rank -= c.get_importance()
         ranks.append(rank)
-    return recipes.keys()[ranks.index(max(ranks))]#rec[ranks.index(max(ranks))]
+    return rec[ranks.index(max(ranks))]
     
 
 if __name__ == "__main__":
