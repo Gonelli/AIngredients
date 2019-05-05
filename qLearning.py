@@ -3,6 +3,7 @@
 # if bad, decrease it
 import sys
 from math import sqrt
+import copy
 
 #and then eventually, we can dynamically generate new recipes based on ingredients that are towards
 
@@ -55,14 +56,14 @@ def recommendModifiedRecipe(user, recipe, flags):
     min_ingredient = (None, sys.maxint, None)
     for flag in flags:
         weights = user.ingredient_weights[flag]
-        for ingredient in recipe.ingredients.items():
-            if weights[ingredient] < min_ingredient[1]:
+        for (ingredient, quantity) in recipe.ingredients.items():
+            if weights[ingredient.name] < min_ingredient[1]:
                 #this is new minimum
-                min_ingredient = (ingredient, weights[ingredient], flag)
+                min_ingredient = (ingredient, weights[ingredient.name], flag)
     # create a copy of the original recipe, swap the old ingredient with a new one, and return
     sorted_ingredients = sorted(user.ingredient_weights[flag].items(), key=lambda x: x[1], reverse=True)
-    ingredient_names = [ingredient.name for ingredient in recipe.weights]
-    new_recipe = recipe.copy()
+    ingredient_names = [ingredient.name for (ingredient, quantity) in recipe.ingredients.items()]
+    new_recipe = copy.copy(recipe)
     for ingredient in sorted_ingredients:
         if ingredient.name not in ingredient_names:
             # find the equivalent value of the new ingredient for the old ingredient
