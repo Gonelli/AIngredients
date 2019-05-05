@@ -100,7 +100,36 @@ def main():
 	print flagGrades
 	myUser = User(.5)
 	updateWeights(myUser, myRecipe, flagGrades)
-	myRecipe.ingredients
+
+	print "Did you like that recipe?"
+	print "Please grade the following aspects from -5 to 5"
+
+	flagGrades = {}
+	for flag in myRecipe.flags:
+		print "Flag: ", flag.title()
+
+		while True:
+			userInput = raw_input("")
+			try:
+
+				if int(userInput) >= -5 and int(userInput) <= 5:
+					flagGrades[flag] = int(userInput)
+					break
+			except:
+				userInput = ""
+			print "\n> Sorry, please try again. Enter your grade between -5 and 5."
+			print "Flag: ", flag.title()
+
+	updateWeights(myUser, myRecipe, flagGrades)
+
+	for ingredient in myRecipe.ingredients:
+		print ingredient.name
+
+	recommendModifiedRecipe(myUser, myRecipe, flagGrades)
+
+	for ingredient in myRecipe.ingredients:
+		print ingredient.name
+
 
 
 if __name__ == "__main__":
