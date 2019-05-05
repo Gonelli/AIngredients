@@ -65,10 +65,15 @@ def recommendModifiedRecipe(user, recipe, flags):
     for flag in flags:
         weights = user.ingredient_weights[flag]
         for (ingredient, quantity) in recipe.ingredients.items():
+            if ingredient.name not in weights:
+                continue
             if weights[ingredient.name][WEIGHT_INDEX] < min_ingredient[1]:
                 #this is new minimum
                 min_ingredient = (ingredient, weights[ingredient.name][WEIGHT_INDEX], flag)
     # create a copy of the original recipe, swap the old ingredient with a new one, and return
+    if min_ingredient[0] is None:
+        # we have never seen any of these ingredients before, return the original recipe, unmodified
+        return recipe
     sorted_ingredients = sorted(user.ingredient_weights[flag].items(), key=lambda x: x[1][WEIGHT_INDEX], reverse=True)
     ingredient_names = {ingredient.name for (ingredient, quantity) in recipe.ingredients.items()}
     new_recipe = copy.copy(recipe)
