@@ -6,9 +6,18 @@ from math import sqrt
 
 #and then eventually, we can dynamically generate new recipes based on ingredients that are towards
 
+class WeightsDictionary:
+    def __init__(self):
+       self.dict = {}
+
+    def __getitem__(self, key):
+        if key not in self.dict:
+            self.dict[key] = {}
+        return self.dict[key]
+
 class User:
     # dictionary of weights for each possible flag
-    ingredient_weights = {}
+    ingredient_weights = WeightsDictionary()
     #possibly add constraints for users
     #how fast the user wants to tweak recipes
     alpha = 0.5
@@ -17,6 +26,7 @@ class User:
     def __init__(self, alpha, **constraints):
         self.alpha = alpha
         self.constraints = constraints 
+
 
 """
 user: User object with defined ingredient weights
@@ -28,7 +38,7 @@ def updateWeights(user, recipe, grades):
     for (category, grade) in grades:
         # grades should be on a scale from -5 to 5 so that updating weights is easy
         for (ingredient, quantity) in recipe.ingredients:
-            user.ingredient_weights[category][ingredient.name] = sqrt(user.ingredient_weights[category] + (user.alpha * grade * ingredient_feature_function(ingredient, quantity)))
+            user.ingredient_weights[category][ingredient.name] = sqrt(user.ingredient_weights[category].get([ingredient.name], 0.0) + (user.alpha * grade * ingredient_feature_function(ingredient, quantity)))
 
 def recommendModifiedRecipe(user, recipe, flags):
     #swap out the minimum ingredient with something new
