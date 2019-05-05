@@ -8,7 +8,7 @@ import getopt
 import sys
 import numpy as np
 
-def recommend(recipes, userStats, userPrefs):
+def recommend(recipeList, userStats, userPrefs):
 
     constraints = []
     ranks = []
@@ -18,11 +18,12 @@ def recommend(recipes, userStats, userPrefs):
         constraints.append(Flavour_Constraint(flavour))
     constraints.append(Calories_Constraint(userStats[0], userStats[1], userStats[2], userStats[3], userStats[4]))
     constraints.append(Balance_Constraint())
-
+    
     rec = []
-    for recipeName in recipes.keys():
+    for myRecipe in recipeList:
+    #for recipeName in recipes.keys():
         #print recipeName
-        myRecipe = Recipe(recipeName, recipes[recipeName][0],recipes[recipeName][1])
+        #myRecipe = Recipe(recipeName, recipes[recipeName][0],recipes[recipeName][1])
         #rec.append(myRecipe)
         rank = 0
         deleted = False
@@ -50,8 +51,9 @@ def recommend(recipes, userStats, userPrefs):
     for r in ranks:
         prob.append(float(r+0.1)/(sum(ranks)+0.1*len(ranks))) #Laplace smoothing
     index = int(np.random.choice(len(prob),p=prob))
+    #print ranks
     #print prob
-    #print ranks[index]
+    #print index
     return rec[index]#rec[ranks.index(max(ranks))]
     
 
@@ -110,6 +112,9 @@ if __name__ == "__main__":
     
     ranks = []
     allRecipes = parseRecipes()
+    recipeList = []
+    for recipeName in allRecipes.keys():
+        recipeList.append(Recipe(recipeName, allRecipes[recipeName][0],allRecipes[recipeName][1]))
     stat = [meal,gender, height, weight, age]
     pref = [vege,flavour]
     '''
@@ -125,8 +130,8 @@ if __name__ == "__main__":
         ranks.append(rank)
     print ranks
     '''
-    print recommend(allRecipes,stat,pref)
-    
+    #print recommend(allRecipes,stat,pref)
+    print recommend(recipeList,stat,pref)
     
     
     
