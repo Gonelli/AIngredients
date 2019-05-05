@@ -15,6 +15,13 @@ class WeightsDictionary:
             self.dict[key] = {}
         return self.dict[key]
 
+    def __str__(self):
+        result = ''
+        for (key, dictionary) in self.dict.items():
+            result += key + ': ' + str(dictionary) + ', '
+        result = result[0: len(result) - 2]
+        return result
+
 class User:
     # dictionary of weights for each possible flag
     ingredient_weights = WeightsDictionary()
@@ -40,6 +47,8 @@ def updateWeights(user, recipe, grades):
         for (ingredient, quantity) in recipe.ingredients.items():
             raw_quantity = user.ingredient_weights[category].get(ingredient.name, 0.0) + (user.alpha * grade * ingredient_feature_function(ingredient, quantity))
             user.ingredient_weights[category][ingredient.name] = sqrt(abs(raw_quantity)) * ((raw_quantity / raw_quantity) if raw_quantity > 0 else 0)
+    print(user.ingredient_weights)
+
 
 def recommendModifiedRecipe(user, recipe, flags):
     #swap out the minimum ingredient with something new in same category
