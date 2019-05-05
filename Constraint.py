@@ -13,7 +13,7 @@ class Vege_Constraint(Constraint):
     def satisfy(self,recipe):
         #return recipe.vegetarian
         #return recipe["vegetarian"]
-        print recipe.flags
+        #print recipe.flags
         return "vegetarian" in recipe.flags
     def get_importance(self):
         return 6
@@ -146,8 +146,7 @@ def get_nutrients(recipe):
             nutrient["fibre"] += k.getNutrientValue("Fiber, total dietary", amount)#[0]
     #print nutrient
     return nutrient
-    
-
+   
 #testing code
 '''
 recipe1 = {"carbonhydrate":50.01,"fat":13.3,"protein":20.01,"fibre":5.6,"vegetarian":False}
