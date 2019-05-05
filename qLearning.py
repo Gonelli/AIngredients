@@ -41,16 +41,16 @@ def updateWeights(user, recipe, grades):
             user.ingredient_weights[category][ingredient.name] = sqrt(user.ingredient_weights[category].get([ingredient.name], 0.0) + (user.alpha * grade * ingredient_feature_function(ingredient, quantity)))
 
 def recommendModifiedRecipe(user, recipe, flags):
-    #swap out the minimum ingredient with something new
-    min_ingredient = (None, sys.maxint)
+    #swap out the minimum ingredient with something new in same category
+    min_ingredient = (None, sys.maxint, None)
     for flag in flags:
         weights = user.ingredient_weights[flag]
         for ingredient in recipe.ingredients:
             if weights[ingredient] < min_ingredient[1]:
                 #this is new minimum
-                min_ingredient = (ingredient, weights[ingredient])
+                min_ingredient = (ingredient, weights[ingredient], flag)
     # create a copy of the original recipe, swap the old ingredient with a new one, and return
-    sorted_ingredients = sorted(user.ingredient_weights.items(), key=lambda x: x[1], reverse=True)
+    sorted_ingredients = sorted(user.ingredient_weights[flag].items(), key=lambda x: x[1], reverse=True)
     ingredient_names = [ingredient.name for ingredient in recipe.weights]
     new_recipe = recipe.copy()
     for ingredient in sorted_ingredients:
