@@ -12,6 +12,7 @@ class Ingredient:
 		# Defaults to [b]asic report stats
 		self.reportJson = json.loads(self.getReport([self.getFoodID(searchTerms, "Standard Reference")], "b"))
 		self.name = self.reportJson["foods"][0]["food"]["desc"]["name"]
+		self.easyName = "n/a"
 		self.nutrients = {} # Nutrient name: (Amount per 100g of ingredient, Unit)
 		self.nutrientsDetailed = [] # Fully detailed nutient list with measurement options
 

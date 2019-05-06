@@ -56,7 +56,7 @@ def updateWeights(user, recipe, grades):
         for (ingredient, quantity) in recipe.ingredients.items():
             raw_quantity = user.ingredient_weights[category].get(ingredient.name, (0.0, None))[WEIGHT_INDEX] + (user.alpha * grade * ingredient_feature_function(ingredient, quantity))
             user.ingredient_weights[category][ingredient.name] = (sqrt(abs(raw_quantity)) * ((raw_quantity / raw_quantity) if raw_quantity > 0 else 0), ingredient)
-    print(user.ingredient_weights)
+    # print(user.ingredient_weights)
 
 
 def recommendModifiedRecipe(user, recipe, flags):
@@ -66,7 +66,6 @@ def recommendModifiedRecipe(user, recipe, flags):
         weights = user.ingredient_weights[flag]
         for (ingredient, quantity) in recipe.ingredients.items():
             if ingredient.name not in weights:
-                print "continued"
                 continue
             if weights[ingredient.name][WEIGHT_INDEX] < min_ingredient[1]:
                 #this is new minimum
@@ -89,8 +88,6 @@ def recommendModifiedRecipe(user, recipe, flags):
             # delete the old ingredient
             new_recipe.ingredients.pop(min_ingredient[0], None)
             new_recipe.ingredients[tup[OBJ_INDEX]] = new_value
-            print "modified"
-            print new_recipe
             return new_recipe
     #should not reach here
     return recipe

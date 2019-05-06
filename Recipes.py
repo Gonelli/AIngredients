@@ -42,6 +42,7 @@ class Recipe:
 		self.flags = hollowFlags
 		for ingredientName in hollowRecipe.keys():
 			fullIngredient = Ingredient(ingredientName)
+			fullIngredient.easyName = ingredientName
 			self.ingredients[fullIngredient] = hollowRecipe[ingredientName]
 
 	"""
