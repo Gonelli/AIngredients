@@ -14,7 +14,7 @@ def main():
 
 	hungry = True
 	loop = 0
-	TEST = True
+	TEST = False
 
 	allRecipes = parseRecipes()
 	recipeList = []
