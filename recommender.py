@@ -50,7 +50,7 @@ def recommend(recipeList, userStats, userPrefs):
     for r in ranks:
         prob.append(float(r+0.1)/(sum(ranks)+0.1*len(ranks))) #Laplace smoothing
     index = int(np.random.choice(len(prob),p=prob))
-    print prob
+    #print prob
     return rec[index]#rec[ranks.index(max(ranks))]
     
 
@@ -128,6 +128,11 @@ if __name__ == "__main__":
     print ranks
     '''
     #print recommend(allRecipes,stat,pref)
+    print recommend(recipeList,stat,pref)
+    
+    for r in recipeList:
+        r.divideRecipe(adjust_factor(r,meal,gender, height, weight, age))
+
     print recommend(recipeList,stat,pref)
     
     

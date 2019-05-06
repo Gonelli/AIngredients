@@ -114,7 +114,7 @@ class Balance_Constraint(Constraint):
         #check vitamins?
         #check fibre
         #nutrients = recipe.get_nutrients()
-        nutrients = get_nutrients(recipe) #for test only
+        nutrients = get_nutrients(recipe) 
         fibre = nutrients["fibre"]
         #fibre in 25-38g per day
         ch_calories = 4 * nutrients["carbonhydrate"]
@@ -147,7 +147,29 @@ def get_nutrients(recipe):
             nutrient["fibre"] += k.getNutrientValue("Fiber, total dietary", amount)#[0]
     #print nutrient
     return nutrient
-   
+
+def adjust_factor(recipe,meal, gender, height, weight, age):
+    if gender == "male":
+        maintenance = 10*weight + 6.25*height - 5*age + 5
+    elif gender == "female":
+        maintenance = 10*weight + 6.25*height - 5*age - 161
+    maintenance -= 500
+    nutrients = get_nutrients(recipe) 
+        
+    ch_calories = 4 * nutrients["carbonhydrate"]
+    fat_calories = 9 * nutrients["fat"]
+    protein_calories = 4 * nutrients["protein"]
+    total_calories = ch_calories + fat_calories + protein_calories
+    #print total_calories
+    if meal == "breakfast":
+        factor = max(int(total_calories/(0.2*maintenance)),1)
+    else:
+        factor= max(int(total_calories/(0.4*maintenance)),1)
+    #print factor
+    return factor
+    
+
+
 #testing code
 '''
 recipe1 = {"carbonhydrate":50.01,"fat":13.3,"protein":20.01,"fibre":5.6,"vegetarian":False}
