@@ -77,7 +77,7 @@ def recommendModifiedRecipe(user, recipe, flags):
         return recipe
     sorted_ingredients = sorted(user.ingredient_weights[flag].items(), key=lambda x: x[1][WEIGHT_INDEX], reverse=True)
     ingredient_names = {ingredient.name for (ingredient, quantity) in recipe.ingredients.items()}
-    new_recipe = copy.copy(recipe)
+    new_recipe = copy.deepcopy(recipe)#copy.copy(recipe)
     for (ingredient, tup) in sorted_ingredients:
         if ingredient not in ingredient_names:
             # find the equivalent value of the new ingredient for the old ingredient
