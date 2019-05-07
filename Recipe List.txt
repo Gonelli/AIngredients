@@ -32,7 +32,7 @@ Beef and Broccoli Stir Fry:
 	Ground Ginger				1 teaspoons
 	Sesame Oil					9 teaspoons
 	Dry Egg Noodles				4.5 oz
-~ meat
+~ meat, chinese, savory, dinner
 Beef Stew:
 	Boneless Chuck Steak		24 oz
 	Raw Celery					0.5 cups
@@ -48,13 +48,13 @@ Beef Stew:
 	Frozen corn off the cob		1 cups
 	Enriched all-purpose flour	0.25 cups
 	Tap Drinking Water			0.25 cups
-~ meat
+~ meat, irish, savory, dinner
 Enchiladas:
 	Seasoned chicken for fajitas	16 oz
 	Enchilada Sauce				16 oz
 	Mexican Cheese Blend		2 cups
 	Ready-to-bake corn tortillas 	12 tortillas
-~ meat
+~ meat, mexican, spicy, dinner
 Fettuccine Alfredo:
 	Heavy Cream					0.75 cups
 	Raw Garlic					1.5 teaspoons
@@ -62,4 +62,4 @@ Fettuccine Alfredo:
 	Dried Parsley				6 teaspoons
 	Fettuccine Egg Noodles		18 oz
 	Salted butter				6 teaspoons
-~ vegetarian, Italian
+~ vegetarian, italian, salty, lunch

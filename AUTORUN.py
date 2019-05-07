@@ -85,12 +85,13 @@ def main():
 
 	while hungry:
 		loop += 1
+		flagValue = -5
 
 		# Meal
 		print "\n> Sooooo.... Is this breakfast, lunch, or dinner?"
 
 		while True:
-			userInput = raw_input("")
+			userInput = "d"
 			if userInput.lower()[0] is 'b':
 				userMeal = "breakfast"
 				break
@@ -109,7 +110,7 @@ def main():
 
 		isVege = True
 		while True:
-			userInput = raw_input("")
+			userInput = "no"
 			if 'y' is userInput.lower()[0]:
 				break
 			elif 'n' is userInput.lower()[0]:
@@ -124,7 +125,7 @@ def main():
 
 		preferredCuisine = None
 		while True:
-			userInput = raw_input("")
+			userInput = "none"
 			if userInput.lower() == "none":
 				preferredCuisine = None
 				break
@@ -140,7 +141,7 @@ def main():
 
 		preferredCuisine = None
 		while True:
-			userInput = raw_input("")
+			userInput = "none"
 			if userInput.lower() == "none":
 				preferredFlavor = None
 				break
@@ -170,6 +171,10 @@ def main():
 		# Print recipe
 		print myRecipe.name.upper()
 		for ingredient in myRecipe.ingredients.keys():
+			if ingredient.easyName == "Baby Broccoli":
+				flagValue = 5
+				print "******"
+
 			print "{0:22} {1}".format(ingredient.easyName+":",myRecipe.ingredients[ingredient])
 
 		print "> Did you like that recipe?"
@@ -181,7 +186,7 @@ def main():
 			print "> Flag: ", flag.title()
 
 			while True:
-				userInput = raw_input("")
+				userInput = flagValue
 				try:
 
 					if int(userInput) >= -5 and int(userInput) <= 5:
@@ -197,6 +202,10 @@ def main():
 
 		print "\n> Wasn't that fun? How about another meal, whenever you're ready?"
 		while True:
+			if loop < 1000:
+				userInput = "y"
+			else:
+				userInput = raw_input("")
 			if 'y' is userInput.lower()[0] or userInput.lower() == "sure":
 				break
 			elif 'n' in userInput.lower()[0]:

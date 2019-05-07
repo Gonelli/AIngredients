@@ -45,7 +45,7 @@ def recommend(recipeList, userStats, userPrefs):
     print softmax
     print ranks[index]
     '''
-    print ranks
+    # print ranks
     prob = []
     for r in ranks:
         prob.append(float(r+0.1)/(sum(ranks)+0.1*len(ranks))) #Laplace smoothing

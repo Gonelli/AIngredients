@@ -55,7 +55,7 @@ def updateWeights(user, recipe, grades):
         # grades should be on a scale from -5 to 5 so that updating weights is easy
         for (ingredient, quantity) in recipe.ingredients.items():
             raw_quantity = user.ingredient_weights[category].get(ingredient.name, (0.0, None))[WEIGHT_INDEX] + (user.alpha * grade * ingredient_feature_function(ingredient, quantity))
-            user.ingredient_weights[category][ingredient.name] = (sqrt(abs(raw_quantity)) * ((raw_quantity / raw_quantity) if raw_quantity > 0 else 0), ingredient)
+            user.ingredient_weights[category][ingredient.name] = raw_quantity, ingredient
     # print(user.ingredient_weights)
 
 
